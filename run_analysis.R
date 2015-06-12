@@ -1,11 +1,11 @@
 # Merge training and test data
 
 #Load
-train = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/X_train.txt")
-trainlab = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/y_train.txt")
+train = read.table("./train/X_train.txt")
+trainlab = read.table("./train/y_train.txt")
 
-test = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/X_test.txt")
-testlab = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/y_test.txt")
+test = read.table("./test/X_test.txt")
+testlab = read.table("./test/y_test.txt")
 
 #nrow(train) = 7352, nrow(test) = 2947
 
@@ -14,7 +14,7 @@ dataset = rbind(train,test)
 
 
 # Extracts only the measurements on the mean and standard deviation for each measurement
-feat = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/features.txt")
+feat = read.table("features.txt")
 indices = grep("mean\\(\\)|std\\(\\)",feat$V2)
 
 dataset = dataset[,indices]
@@ -23,7 +23,7 @@ featnames = gsub("std\\(\\)", "Stdev", featnames)
 featnames = gsub("-","_",featnames)
 
 # Uses descriptive activity names to name the activities in the data set
-activity = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/activity_labels.txt")
+activity = read.table("activity_labels.txt")
 dataset = cbind(dataset,rbind(trainlab,testlab))
 # Remove duplicate column names
 names(dataset)[67] = "Labels"
@@ -41,8 +41,8 @@ names(dataset)[67]="Labels"
 # Create a second, independent tidy data set with the average of each variable for each activity and each subject
 
 # Load Subject info
-subtrain = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/subject_train.txt")
-subtest = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/subject_test.txt")
+subtrain = read.table("./train/subject_train.txt")
+subtest = read.table("./test/subject_test.txt")
 
 dataset = cbind(dataset,rbind(subtrain, subtest))
 names(dataset)[68] = "Subject"
