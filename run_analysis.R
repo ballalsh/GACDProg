@@ -4,12 +4,8 @@
 train = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/X_train.txt")
 trainlab = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/y_train.txt")
 
-train = cbind(train,trainlab)
-
 test = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/X_test.txt")
 testlab = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/y_test.txt")
-
-test = cbind(test,testlab)
 
 #nrow(train) = 7352, nrow(test) = 2947
 
@@ -32,12 +28,19 @@ dataset = cbind(dataset,rbind(trainlab,testlab))
 # Remove duplicate column names
 names(dataset)[67] = "Labels"
 dataset = merge(dataset,activity,by.x="Labels",by.y="V1",all.x=TRUE)
-names(dataset)[3] = "V2"
 
 # Appropriately labels the data set with descriptive variable names
+names(dataset)[3] = "V2"
+dataset$Labels=NULL
+
+# Get column names of dataset from features.txt
+# names(dataset) = feat[as.numeric(substr(names(dataset)[1:66],2,100))]
+names(dataset) = featnames
+names(dataset)[67]="Labels"
 
 
-# From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject
+
+# Create a second, independent tidy data set with the average of each variable for each activity and each subject
 
 
 
