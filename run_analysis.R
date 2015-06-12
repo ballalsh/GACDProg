@@ -38,9 +38,18 @@ dataset$Labels=NULL
 names(dataset) = featnames
 names(dataset)[67]="Labels"
 
-
-
 # Create a second, independent tidy data set with the average of each variable for each activity and each subject
 
+# Load Subject info
+subtrain = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/train/subject_train.txt")
+subtest = read.table("./Coursera/gettingcleaningdata/UCI HAR Dataset/test/subject_test.txt")
+
+dataset = cbind(dataset,rbind(subtrain, subtest))
+names(dataset)[68] = "Subject"
+
+library(dplyr)
+submission = dataset %>% group_by(Subject,Labels) %>% summarise_each(funs(mean))
+
+write.table(submission,"tidy_means.txt",row.name=FALSE)
 
 
